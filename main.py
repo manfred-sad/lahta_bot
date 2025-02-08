@@ -92,7 +92,7 @@ def send_telegram_message(message):
                 logger.info(f"message_id: {message_id}")
                 last_message_time = current_time
                 logger.info(f"Telegram message sent successfully. Status {res.status_code}.")
-                msg_sleep = 600
+                #msg_sleep = 600
             else:
                 logger.error(f"Failed to send Telegram message. Status {res.status_code}. Text: {res.text}")
         except Exception as e:
