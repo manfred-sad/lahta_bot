@@ -8,7 +8,7 @@ from datetime import datetime
 
 
 last_message_time = None
-msg_sleep = 1800
+msg_sleep = 0
 msg = True
 ticket = False
 i = 1
@@ -131,6 +131,7 @@ def check_slots(i):
         try:
             logger.info(f"Try #{i}")
             response = requests.post(url, json=payload, headers=headers)
+            log_message = ""  
 
             if response.status_code == 200:
                 response_json = response.json()
@@ -154,6 +155,8 @@ def check_slots(i):
                         message += ", ".join(available_slots)
                         message += "\n\n"
 
+                        log_message += f"{date}: " + ", ".join(available_slots) + "; "
+
                 if found_tickets and msg:
                     message += "<a href='https://tickets.lakhta.events/event/23FA307410B1F9BE84842D1ABE30D6AB48EA2CF8/'> <b>Купить на официальном сайте</b></a>"
                     send_telegram_message(message)  
@@ -167,13 +170,13 @@ def check_slots(i):
                     logger.info("sent tg msg ALL GONE")
                     msg = True 
                     ticket = False 
-                    logger.info("Sleep 2 hours before new try")
+                    logger.info("Sleep 0.5 hours before new try")
                     time.sleep(1800) 
                     # тупая задержка 30 минут, чтоб не спамить о единичных билетах, которые не оплатили, и которые вернулись в пул
                     # TODO придумать алгоритм, который бы пропускал такие возвраты. Может для уведомления нужно больше 3 билетов?
                     # 
 
-                logger.debug("билеты доступны!" if found_tickets else "Нет доступных билетов")
+                logger.debug(f"Билеты доступны! {log_message}" if found_tickets else "Нет доступных билетов")
 
 
             logger.info("Sleep before new try 1 min")
