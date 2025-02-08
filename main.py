@@ -163,7 +163,7 @@ def check_slots(i):
 
                 elif not found_tickets and ticket:
                     message = "❌ <b>Билеты закончились!</b>"
-                    send_telegram_message(message, msg_sleep)
+                    send_telegram_message(message)
                     logger.info("sent tg msg ALL GONE")
                     msg = True 
                     ticket = False 
