@@ -8,7 +8,7 @@ from datetime import datetime
 
 
 last_message_time = None
-msg_sleep = 0
+msg_sleep = 0 #не используется 
 msg = True
 ticket = False
 i = 1
@@ -68,13 +68,13 @@ logger = log()
 
 def send_telegram_message(message):
     
-    bot_token = '8124405995:AAHX6Pm5JcM-QmpMUNc-bSu7rSrECfZxzs8'
-    #chat_id = "@lahta_tickets"
+    bot_token = '8124405995:AAHX6Pm5JcM-QmpMUNc-bSu7rSrECfZxzs8' #тут надо свои значения добавить
+    #chat_id = "@lahta_tickets" #и ID своего чата
     chat_id = "55792067"
     global last_message_time
     current_time = datetime.now()
 
-    if last_message_time is None or (current_time - last_message_time).total_seconds() >= msg_sleep:
+    if last_message_time is None or (current_time - last_message_time).total_seconds() >= msg_sleep: #так как msg_sleep = 0, то данное условие всегда верно. просто функция стандартна для разных ботов.
         try:
             message_send = requests.Session()
             url = f"https://api.telegram.org/bot{bot_token}/sendMessage"
@@ -93,9 +93,11 @@ def send_telegram_message(message):
                 last_message_time = current_time
                 logger.info(f"Telegram message sent successfully. Status {res.status_code}.")
                 #msg_sleep = 600
+
             else:
                 logger.error(f"Failed to send Telegram message. Status {res.status_code}. Text: {res.text}")
         except Exception as e:
+
             logger.error("Error sending Telegram message: ", exc_info=True)
     else:
         logger.info("Message not sent (too soon).")
@@ -131,13 +133,13 @@ def check_slots(i):
         try:
             logger.info(f"Try #{i}")
             response = requests.post(url, json=payload, headers=headers)
-            log_message = ""  
+            log_message = ""  #формируем строку с данными, для удобного логирования
 
             if response.status_code == 200:
                 response_json = response.json()
                 available_dates = response_json.get("response", {}).get("calendar", [])
 
-                message = "<b>🎫 Появились билеты:\n</b>"
+                message = "<b>🎫 Появились билеты:\n</b>" 
                 found_tickets = False  
 
                 for date_entry in available_dates:
@@ -149,7 +151,7 @@ def check_slots(i):
                         for slot in times if int(slot["quantity"]) > 0
                     ]
 
-                    if available_slots:
+                    if available_slots: #если есть доступные билеты, формируем отформатированные данные для отправки в телегу
                         found_tickets = True
                         message += f"<b>{date}</b>\n"
                         message += ", ".join(available_slots)
