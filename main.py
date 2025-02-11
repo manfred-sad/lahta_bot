@@ -69,8 +69,8 @@ logger = log()
 def send_telegram_message(message):
     
     bot_token = '8124405995:AAHX6Pm5JcM-QmpMUNc-bSu7rSrECfZxzs8' #тут надо свои значения добавить
-    #chat_id = "@lahta_tickets" #и ID своего чата
-    chat_id = "55792067"
+    chat_id = "@lahta_tickets" #и ID своего чата
+    #chat_id = "55792067"
     global last_message_time
     current_time = datetime.now()
 
